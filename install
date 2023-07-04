@@ -21,6 +21,17 @@ blue_echo() {
     echo -e "\e[34m$1\e[0m"
 }
 
+
+# Function for tick symbol
+tick() {
+    echo -e "\xE2\x9C\x94"
+}
+
+# Function for cross symbol
+cross() {
+    echo -e "\xE2\x9D\x8C"
+}
+
 # Function to display the installed package version in green
 display_installed_version() {
     installed_version=$(dpkg -s "$1" | grep -i '^version:' | awk '{print $NF}')
@@ -98,32 +109,32 @@ green_echo "---------------------"
 blue_echo "Installation summary:"
 green_echo "---------------------"
 if $docker_installed; then
-    blue_echo "docker-compose was already installed."
+    blue_echo "$(cross) docker-compose was already installed."
 else
-    green_echo "docker-compose is now installed."
+    green_echo "$(tick) docker-compose is now installed."
 fi
 
 if $npm_installed; then
-    blue_echo "npm was already installed."
+    blue_echo "$(cross) npm was already installed."
 else
-    green_echo "npm is now installed."
+    green_echo "$(tick) npm is now installed."
 fi
 
 if $jq_installed; then
-    blue_echo "jq was already installed."
+    blue_echo "$(cross) jq was already installed."
 else
-    green_echo "jq is now installed."
+    green_echo "$(tick) jq is now installed."
 fi
 
 if $golang_installed; then
-    blue_echo "golang-go was already installed."
+    blue_echo "$(cross) golang-go was already installed."
 else
-    green_echo "golang-go is now installed."
+    green_echo "$(tick) golang-go is now installed."
 fi
 
 if $pm2_installed; then
-    blue_echo "pm2 was already installed."
+    blue_echo "$(cross) pm2 was already installed."
 else
-    green_echo "pm2 is now installed."
+    green_echo "$(tick) pm2 is now installed."
 fi
 
