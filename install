@@ -76,15 +76,27 @@ else
     golang_installed=false
 fi
 
+# Check and install pm2 globally
+if npm list -g --depth=0 | grep -q "^.* pm2@"; then
+    display_installed_version "pm2"
+    pm2_installed=true
+else
+    echo "pm2 is not installed. Installing..."
+    sudo npm install -g pm2
+    echo "pm2 installation finished."
+    installed_version=$(npm list -g --depth=0 pm2 | grep -o "@[0-9.]*" | grep -o "[0-9.]*")
+    green_echo "pm2 is now installed (version: $installed_version)"
+    pm2_installed=false
+fi
 
 echo
 echo
 echo
 
 # Summary
-blue_echo "---------------------"
+green_echo "---------------------"
 blue_echo "Installation summary:"
-blue_echo "---------------------"
+green_echo "---------------------"
 if $docker_installed; then
     blue_echo "docker-compose was already installed."
 else
@@ -108,3 +120,10 @@ if $golang_installed; then
 else
     green_echo "golang-go is now installed."
 fi
+
+if $pm2_installed; then
+    blue_echo "pm2 was already installed."
+else
+    green_echo "pm2 is now installed."
+fi
+
