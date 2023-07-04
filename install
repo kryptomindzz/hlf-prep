@@ -76,7 +76,13 @@ else
     golang_installed=false
 fi
 
+
+echo
+echo
+echo
+
 # Summary
+blue_echo "---------------------"
 blue_echo "Installation summary:"
 blue_echo "---------------------"
 if $docker_installed; then
