@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# Check if the script is running with sudo
+if [ "$(id -u)" != "0" ]; then
+    echo "This script requires sudo access. Please run it with sudo."
+    exit 1
+fi
+
+# Function to check if a package is installed
+is_package_installed() {
+    dpkg -s "$1" >/dev/null 2>&1
+}
+
+# Function to display the installed package version in green
+display_installed_version() {
+    installed_version=$(dpkg -s "$1" | grep -i '^version:' | awk '{print $NF}')
+    echo -e "\e[32m$1 is already installed (version: $installed_version)\e[0m"
+}
+
+# Function to install a package
+install_package() {
+    echo "$1 is not installed. Installing..."
+    sudo apt-get install -y "$1"
+    echo "$1 installation finished."
+    installed_version=$(dpkg -s "$1" | grep -i '^version:' | awk '{print $NF}')
+    echo -e "\e[32m$1 is now installed (version: $installed_version)\e[0m"
+}
+
+# Update package lists
+echo "Running apt update..."
+sudo apt-get update -y
+
+# Check and install docker-compose
+if is_package_installed "docker-compose"; then
+    display_installed_version "docker-compose"
+    docker_installed=true
+else
+    install_package "docker-compose"
+    docker_installed=false
+fi
+
+# Check and install npm
+if is_package_installed "npm"; then
+    display_installed_version "npm"
+    npm_installed=true
+else
+    install_package "npm"
+    npm_installed=false
+fi
+
+# Check and install jq
+if is_package_installed "jq"; then
+    display_installed_version "jq"
+    jq_installed=true
+else
+    install_package "jq"
+    jq_installed=false
+fi
+
+# Check and install golang-go
+if is_package_installed "golang-go"; then
+    display_installed_version "golang-go"
+    golang_installed=true
+else
+    install_package "golang-go"
+    golang_installed=false
+fi
+
+# Summary
+echo "Installation summary:"
+echo "---------------------"
+if $docker_installed; then
+    echo "docker-compose was already installed."
+else
+    echo "docker-compose is now installed."
+fi
+
+if $npm_installed; then
+    echo "npm was already installed."
+else
+    echo "npm is now installed."
+fi
+
+if $jq_installed; then
+    echo "jq was already installed."
+else
+    echo "jq is now installed."
+fi
+
+if $golang_installed; then
+    echo "golang-go was already installed."
+else
+    echo "golang-go is now installed."
+fi
