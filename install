@@ -11,6 +11,16 @@ is_package_installed() {
     dpkg -s "$1" >/dev/null 2>&1
 }
 
+# Function for green color echo
+green_echo() {
+    echo -e "\e[32m$1\e[0m"
+}
+
+# Function for blue color echo
+blue_echo() {
+    echo -e "\e[34m$1\e[0m"
+}
+
 # Function to display the installed package version in green
 display_installed_version() {
     installed_version=$(dpkg -s "$1" | grep -i '^version:' | awk '{print $NF}')
@@ -67,28 +77,28 @@ else
 fi
 
 # Summary
-echo "Installation summary:"
-echo "---------------------"
+blue_echo "Installation summary:"
+blue_echo "---------------------"
 if $docker_installed; then
-    echo "docker-compose was already installed."
+    blue_echo "docker-compose was already installed."
 else
-    echo "docker-compose is now installed."
+    green_echo "docker-compose is now installed."
 fi
 
 if $npm_installed; then
-    echo "npm was already installed."
+    blue_echo "npm was already installed."
 else
-    echo "npm is now installed."
+    green_echo "npm is now installed."
 fi
 
 if $jq_installed; then
-    echo "jq was already installed."
+    blue_echo "jq was already installed."
 else
-    echo "jq is now installed."
+    green_echo "jq is now installed."
 fi
 
 if $golang_installed; then
-    echo "golang-go was already installed."
+    blue_echo "golang-go was already installed."
 else
-    echo "golang-go is now installed."
+    green_echo "golang-go is now installed."
 fi
